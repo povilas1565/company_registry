@@ -1,3 +1,4 @@
 docker-compose.yml
 ./env
 ./vue_registry_frontend/node-modules
+*.sqlite
