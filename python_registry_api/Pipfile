@@ -1,0 +1,28 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+flask = "*"
+flask-cors = "*"
+pytest = "*"
+pytest-flask = "*"
+pytest-playwright = "*"
+pytest-sugar = "*"
+pytest-cov = "*"
+flask-restful = "*"
+flask-sqlalchemy = "*"
+flask-migrate = "*"
+flask-appbuilder = "*"
+pytest-flask-sqlalchemy = "*"
+black = "*"
+flask-marshmallow = "*"
+sqlalchemy-serializer = "*"
+fastapi = "*"
+psycopg2-binary = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.11"
