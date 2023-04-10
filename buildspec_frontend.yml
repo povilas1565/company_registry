@@ -5,7 +5,7 @@ env:
 phases:
   pre_build:
     commands:
-      - aws ecr-public get-login-password --region ${AWS_REGION} | docker login -u AWS --password-stdin public.ecr.aws
+      - aws ecr-private get-login-password --region ${AWS_REGION} | docker login -u AWS --password-stdin private.ecr.aws
       - ECR_MAIN_URI="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
       - aws ecr get-login-password --region ${AWS_REGION} | docker login -u AWS --password-stdin ${ECR_MAIN_URI}
 
