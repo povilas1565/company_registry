@@ -14,6 +14,7 @@ phases:
     commands:
       - cd ./vue_registry_frontend/
       - docker build -t registry-frontend:latest .
+      - cd ..
   post_build:
     commands:
       - docker tag registry-frontend:latest ${ECR_IMAGE_URI}
