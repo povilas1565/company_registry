@@ -18,8 +18,11 @@ ENV POSTGRES_PASSWORD=supersecretpassword
 ENV POSTGRES_DB=registry-dev
 
 
+
+
 # Install application into container
 COPY . .
+RUN pytest -m api
 EXPOSE 5000
 ENTRYPOINT []
 
