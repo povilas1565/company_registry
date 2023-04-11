@@ -1,5 +1,5 @@
 import pytest
-from python_registry_api import configmodule
+from python_registry_api.configmodule import TestingConfig
 from python_registry_api.app import create_app
 from python_registry_api.database import db
 from helpers import (
@@ -13,7 +13,7 @@ import time
 
 @pytest.fixture(scope="function")
 def app():
-    app = create_app(configmodule.TestingConfig)
+    app = create_app(TestingConfig)
     with app.app_context():
         db.create_all()
     yield app
