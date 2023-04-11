@@ -1,5 +1,5 @@
 import pytest
-import python_registry_api.configmodule
+from python_registry_api import configmodule
 from python_registry_api.app import create_app
 from python_registry_api.database import db
 from helpers import (
