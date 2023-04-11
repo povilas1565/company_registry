@@ -13,7 +13,7 @@ phases:
   build:
     commands:
       - cd ./vue_registry_frontend/
-      - docker build -t registry-frontend:latest .
+      - docker build -t ${ECR_REPO_NAME}:latest .
       - cd ..
   post_build:
     commands:
