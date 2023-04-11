@@ -1,7 +1,7 @@
 import pytest
-import configmodule
-from app import create_app
-from database import db
+import python_registry_api.configmodule
+from python_registry_api.app import create_app
+from python_registry_api.database import db
 from helpers import (
     create_test_company,
     add_shareholder,
