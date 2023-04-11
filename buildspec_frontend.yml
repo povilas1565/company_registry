@@ -20,9 +20,9 @@ phases:
       - docker tag registry-frontend:latest ${ECR_IMAGE_URI}
       - docker push ${ECR_IMAGE_URI}
 
-      - printf '[{"name":"registry-frontend","imageUri":"%s"}]' ${ECR_IMAGE_URI} > imagedefinitions.json
+      - printf '[{"name":"registry-frontend","imageUri":"%s"}]' ${ECR_IMAGE_URI} > imagedefinitions_frontend.json
 
 artifacts:
   files:
-    - imagedefinitions.json
+    - imagedefinitions_frontend.json
 

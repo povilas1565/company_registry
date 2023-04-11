@@ -19,8 +19,8 @@ phases:
       - docker tag ${ECR_REPO_NAME}:latest ${ECR_IMAGE_URI}
       - docker push ${ECR_IMAGE_URI}
 
-      - printf '[{"name":"registry-frontend","imageUri":"%s"}]' ${ECR_IMAGE_URI} > imagedefinitions.json
+      - printf '[{"name":"registry-frontend","imageUri":"%s"}]' ${ECR_IMAGE_URI} > imagedefinitions_backend.json
 
 artifacts:
   files:
-    - imagedefinitions.json
+    - imagedefinitions_backend.json
