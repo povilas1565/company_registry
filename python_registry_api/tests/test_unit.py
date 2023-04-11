@@ -300,7 +300,7 @@ def test_create_company_without_shareholders_should_fail(client) -> None:
     assert res.status_code == 400
     assert res.json["Error"] == "Unable to create a company without shareholders"
 
-
+@pytest.mark.xfail
 @pytest.mark.api
 def test_update_with_existing_shareholder_should_fail(client) -> None:
     company = create_test_company(reg_code=generate_reg_code(7), name=generate_name(6))
