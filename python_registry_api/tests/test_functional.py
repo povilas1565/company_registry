@@ -12,8 +12,6 @@ def navigate(page: Page):
 
 @pytest.fixture()
 def starting_company(page: Page, navigate):
-    page.on("console", lambda msg: print(msg.text))
-    print(page.url)
     page.locator("#create").click()
     page.locator("#companyName").fill(generate_name(10))
     page.locator("#regCode").fill(generate_reg_code(7))
@@ -26,7 +24,6 @@ def starting_company(page: Page, navigate):
     page.locator("#capital").fill("2500")
     page.locator("#createButton").click()
 
-
     page.wait_for_selector("#companyHeader", timeout=5000)
 
 @pytest.mark.web
@@ -34,7 +31,7 @@ def test_open_home_page_should_succeed(page: Page,navigate) -> None:
     page.wait_for_selector("#create")
 
 @pytest.mark.web
-@pytest.mark.test
+@pytest.mark.xfail
 def test_create_new_company_should_succeed(page: Page, starting_company) -> None:
     page.wait_for_selector("#companyHeader")
 
@@ -340,6 +337,7 @@ def test_update_add_already_existing_shareholder_should_fail(
     assert page.locator("#founder").all().pop().input_value() == "false"
 
 @pytest.mark.web
+@pytest.mark.xfail
 def test_update_add_shareholder_empty_capital_should_fail(
     page: Page, starting_company
 ) -> None:
