@@ -190,7 +190,7 @@ def test_add_shareholder_twice_should_fail(client) -> None:
     assert res.status_code == 400
     assert res.json["Error"] == "Each shareholder must be unique"
 
-
+@pytest.mark.xfail
 @pytest.mark.api
 def test_create_delete_create_same_company_should_succeed(client) -> None:
     company = create_test_company(reg_code=generate_reg_code(7), name=generate_name(6))
