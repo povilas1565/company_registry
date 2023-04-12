@@ -15,7 +15,7 @@ services:
       - 5000:5000
   frontend:
     build: ./vue_registry_frontend
-    command: "nginx -g daemon off;"
+    command: "nginx -g \"daemon off;\""
     ports:
       - 80:80
   db:
