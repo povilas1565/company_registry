@@ -3,7 +3,7 @@ version: '3.8'
 services:
   tests:
     build: ./python_registry_api
-    command: pytest -v -s -m api
+    command: pytest -v -s
     depends_on:
       - db
       - frontend
@@ -15,7 +15,7 @@ services:
       - 5000:5000
   frontend:
     build: ./vue_registry_frontend
-    command:  nginx -g daemon off;
+    command: "nginx -g daemon off;"
     ports:
       - 80:80
   db:

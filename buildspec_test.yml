@@ -12,4 +12,4 @@ phases:
       - docker-compose up --abort-on-container-exit
   post_build:
     commands:
-      -docker images
+      - docker images
