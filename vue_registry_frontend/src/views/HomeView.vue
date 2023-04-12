@@ -26,7 +26,7 @@ export default {
   },
   methods: {
     getCompanies() {
-      const path = 'http://localhost:5000/company/?q_home='+this.searchstring;
+      const path = 'http://testapi:5000/company/?q_home='+this.searchstring;
       if (this.searchstring.length > 2) {
       axios.get(path, {
  headers: {

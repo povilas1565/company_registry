@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 from flask_migrate import Migrate
 from flask import Flask, request
 from flask_restful import Resource, Api
@@ -19,7 +19,7 @@ def create_app(config=configmodule.Config):
 
     Migrate(app, db)
 
-    CORS(app, resources={r"/*": {"origins": "http://localhost:8080"}})
+    CORS(app, resources={r"/*": {"origins": "*"}})
     app.config["CORS_HEADERS"] = "Content-Type"
     api = Api(app)
     api.add_resource(SingleCompanyAPI, "/company/<int:reg_code>")
@@ -191,6 +191,7 @@ class CompanyAPI(Resource):
             all_companies = Company.query.all()
             return {"result": [company.json() for company in all_companies]}, 200
 
+
     def post(self):
         response_json = request.get_json(force=True)
         reg_code_exists = Company.query.filter_by(
@@ -301,4 +302,4 @@ class CompanyAPI(Resource):
 
 if __name__ == "__main__":
     app = create_app()
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0', port=5000)

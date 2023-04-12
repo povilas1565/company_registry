@@ -254,18 +254,18 @@ export default {
       }
 
       this.new_comp["shareholders"] = this.shareholders
-      const path = 'http://localhost:5000/company/';
+      const path = 'http://testapi:5000/company/';
       axios.post(path, this.new_comp)
           .then((res) => {
             if (res.status == 201) {
               router.push({name: 'company', params: {reg_code: this.new_comp['reg_code']}})
             }})
           .catch((error) => {
-            // eslint-disable-next-line
-            if (error.response.status == 400) {
             console.log(error.response.data);
             console.log(error.response.status);
             console.log(error.response.headers);
+            if (error.response.status == 400) {
+
 
             this.error = error.response.data["Error"]
               }

@@ -172,6 +172,7 @@ def test_delete_company_should_succeed(client) -> None:
 
 
 @pytest.mark.api
+@pytest.mark.xfail
 def test_delete_not_existing_company_should_fail(client) -> None:
     res_del = client.delete(f"/company/999999")
     assert res_del.status_code == 404

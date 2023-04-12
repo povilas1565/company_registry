@@ -116,7 +116,7 @@ export default {
     },
     getCompanies() {
 
-      const path = 'http://localhost:5000/company/?q_shareholder=' + this.regCode;
+      const path = 'http://testapi:5000/company/?q_shareholder=' + this.regCode;
       if (this.regCode.length > 2) {
         axios.get(path, {
           headers: {
