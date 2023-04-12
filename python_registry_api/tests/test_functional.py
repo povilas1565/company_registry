@@ -7,7 +7,7 @@ from playwright.sync_api import Page
 
 @pytest.fixture()
 def navigate(page: Page):
-    page.goto("frontend/")
+    page.goto("127.0.0.1")
 
 
 @pytest.fixture()
@@ -458,7 +458,7 @@ def test_search_company_physical_shareholder_should_succeed(page: Page, navigate
         time.sleep(0.5)
 
         page.wait_for_selector("#companyHeader", timeout=2000)
-        page.goto("frontend/")
+        page.goto("127.0.0.1/")
 
         page.locator("#search").fill(company_reg_code)
         result = page.get_by_text(f"{company_reg_code} -- {company_name}")
@@ -506,7 +506,7 @@ def test_search_company_juridical_shareholder_should_succeed(page: Page, navigat
     time.sleep(0.5)
 
     page.wait_for_selector("#companyHeader", timeout=2000)
-    page.goto("frontend/")
+    page.goto("127.0.0.1/")
 
     page.locator("#search").fill(company_reg_code)
     result = page.get_by_text(f"{company_reg_code} -- {company_name}")
