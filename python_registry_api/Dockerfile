@@ -23,6 +23,7 @@ ENV POSTGRES_DB=registry-dev
 # Install application into container
 COPY . .
 RUN playwright install
+RUN playwright install-deps
 ENV PYTHONPATH "${PYTHONPATH}:./python_registry_api/"
 EXPOSE 5000
 ENTRYPOINT []
