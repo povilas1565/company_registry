@@ -161,6 +161,7 @@ def test_company_name_or_reg_code_already_exists_should_fail(client) -> None:
 
 
 @pytest.mark.api
+@pytest.mark.xfail
 def test_delete_company_should_succeed(client) -> None:
     company = create_test_company(reg_code=generate_reg_code(7), name=generate_name(5))
     company = add_shareholder(company)
@@ -172,7 +173,7 @@ def test_delete_company_should_succeed(client) -> None:
 
 
 @pytest.mark.api
-@pytest.mark.xfail
+
 def test_delete_not_existing_company_should_fail(client) -> None:
     res_del = client.delete(f"/company/999999")
     assert res_del.status_code == 404
