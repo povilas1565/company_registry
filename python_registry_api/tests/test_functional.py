@@ -1,9 +1,6 @@
 import time
 
-from helpers import (
-    generate_name,
-    generate_reg_code,
-)
+from helpers import generate_name, generate_reg_code
 import pytest
 from playwright.sync_api import Page
 
@@ -31,8 +28,7 @@ def starting_company(page: Page, navigate):
     page.wait_for_selector("#companyHeader", timeout=2000)
 
 @pytest.mark.web
-def test_open_home_page_should_succeed(page: Page) -> None:
-    page.goto("http://localhost:8080/")
+def test_open_home_page_should_succeed(page: Page,navigate) -> None:
     page.wait_for_selector("#create")
 
 @pytest.mark.web
