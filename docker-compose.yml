@@ -4,6 +4,10 @@ services:
   tests:
     build: ./python_registry_api
     command: pytest -v -s -m api
+    depends_on:
+      - db
+      - frontend
+      - api
   api:
     build: ./python_registry_api
     command: python app.py
@@ -11,9 +15,9 @@ services:
       - 5000:5000
   frontend:
     build: ./vue_registry_frontend
-    command: npm run serce
+    command:  nginx -g daemon off;
     ports:
-      - 8080:8080
+      - 80:80
   db:
     image: postgres:13-alpine
     volumes:
