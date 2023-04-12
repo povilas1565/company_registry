@@ -7,7 +7,7 @@ from playwright.sync_api import Page
 
 @pytest.fixture()
 def navigate(page: Page):
-    page.goto("127.0.0.1")
+    page.goto("http://localhost:8080")
 
 
 @pytest.fixture()
