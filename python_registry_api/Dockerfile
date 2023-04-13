@@ -13,12 +13,6 @@ COPY Pipfile .
 COPY Pipfile.lock .
 RUN pipenv install --system --deploy --ignore-pipfile
 
-ENV POSTGRES_USER=registry
-ENV POSTGRES_PASSWORD=supersecretpassword
-ENV POSTGRES_DB=registry-dev
-
-
-
 
 # Install application into container
 COPY . .

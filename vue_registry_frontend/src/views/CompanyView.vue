@@ -188,7 +188,7 @@ export default {
   },
   methods: {
     getCompany() {
-      const path = 'http://testapi:5000/company/' + this.$route.params.reg_code;
+      const path = 'http://registryapi:5000/company/' + this.$route.params.reg_code;
       axios.get(path)
         .then((res) => {
             this.company = res.data
@@ -219,7 +219,7 @@ export default {
           return
       }
 
-      const path = 'http://testapi:5000/company/'+this.company["reg_code"];
+      const path = 'http://registryapi:5000/company/'+this.company["reg_code"];
       axios.put(path, this.company)
           .then((res) => {
             if (res.status == 201) {

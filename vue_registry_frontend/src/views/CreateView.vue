@@ -254,7 +254,7 @@ export default {
       }
 
       this.new_comp["shareholders"] = this.shareholders
-      const path = 'http://testapi:5000/company/';
+      const path = 'http://registryapi:5000/company/';
       axios.post(path, this.new_comp)
           .then((res) => {
             if (res.status == 201) {

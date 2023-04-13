@@ -150,7 +150,7 @@ export default {
 
 
     getPersons() {
-      const path = 'http://testapi:5000/person/?q=' + this.idCode;
+      const path = 'http://registryapi:5000/person/?q=' + this.idCode;
       if (this.idCode.length > 2) {
         axios.get(path, {
           headers: {
