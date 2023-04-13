@@ -5,7 +5,7 @@ services:
     build:
       context: ./python_registry_api
       dockerfile: Dockerfile.test
-    entrypoint: sh test.sh
+    command: pytest -v -s
     depends_on:
       - api
       - frontend
