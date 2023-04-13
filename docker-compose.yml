@@ -18,7 +18,7 @@ services:
     entrypoint: sh startup.sh
     hostname: registryapi
     environment:
-      - TEST=True
+      - PROD_DB=False
     ports:
       - 5000:5000
   frontend:
