@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile.test
     command: pytest -v -s
     environment:
-      - TEST=True
+      - PROD_DB=False
     depends_on:
       - api
       - frontend
