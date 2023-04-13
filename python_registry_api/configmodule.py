@@ -5,7 +5,10 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 class Config(object):
     TESTING = False
-    SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(basedir, "data.sqlite")
+    if os.environ["TEST"]:
+        SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(basedir, "data.sqlite")
+    else:
+        SQLALCHEMY_DATABASE_URI = None
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 

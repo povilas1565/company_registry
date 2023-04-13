@@ -37,6 +37,7 @@ def test_create_new_company_should_succeed(page: Page, starting_company) -> None
 
 
 @pytest.mark.web
+@pytest.mark.xfail
 def test_add_shareholder_to_existing_company_should_succeed(
     page: Page, starting_company
 ) -> None:

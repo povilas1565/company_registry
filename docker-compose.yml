@@ -6,6 +6,8 @@ services:
       context: ./python_registry_api
       dockerfile: Dockerfile.test
     command: pytest -v -s
+    environment:
+      - TEST=True
     depends_on:
       - api
       - frontend
@@ -15,6 +17,8 @@ services:
       dockerfile: Dockerfile
     entrypoint: sh startup.sh
     hostname: registryapi
+    environment:
+      - TEST=True
     ports:
       - 5000:5000
   frontend:
