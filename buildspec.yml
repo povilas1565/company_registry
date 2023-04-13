@@ -1,15 +1,38 @@
 version: 0.2
 env:
   variables:
-    ECR_REPO_NAME: registry-backend
+    ECR_BACKEND_REPO_NAME: registry-backend
+    ECR_FRONTEND_REPO_NAME: registry-frontend
 phases:
+  pre_build:
+    commands:
+      #Log in to ECR
+      - ECR_MAIN_URI="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
+      - aws ecr get-login-password --region ${AWS_REGION} | docker login -u AWS --password-stdin ${ECR_MAIN_URI}
+      #Create full paths for images
+      - ECR_FRONTEND_IMAGE_URI="${ECR_MAIN_URI}/${ECR_FRONTEND_REPO_NAME}:${CODEBUILD_RESOLVED_SOURCE_VERSION:0:8}"
+      - ECR_BACKEND_IMAGE_URI="${ECR_MAIN_URI}/${ECR_BACKEND_REPO_NAME}:${CODEBUILD_RESOLVED_SOURCE_VERSION:0:8}"
   install:
     commands:
+      #install docker
       - nohup /usr/local/bin/dockerd --host=unix:///var/run/docker.sock --host=tcp://127.0.0.1:2375 --storage-driver=overlay2 &
       - timeout 15 sh -c "until docker info; do echo .; sleep 1; done"
   build:
     commands:
-      - docker-compose up --abort-on-container-exit
+      #build images and run all tests
+      - docker-compose up --abort-on-container-exit --build
   post_build:
     commands:
-      - docker images
+      #push frontend image to ECR and create imagedefinitions file
+      - docker tag src_frontend:latest ${ECR_FRONTEND_IMAGE_URI}
+      - docker push ${ECR_FRONTEND_IMAGE_URI}
+      - printf '[{"name":"registry-frontend","imageUri":"%s"}]' ${ECR__FRONTEND_IMAGE_URI} > imagedefinitions_frontend.json
+
+      #push backend image to ECR and create imagedefinitions file
+      - docker tag src_api:latest ${ECR_BACKEND_IMAGE_URI}
+      - docker push ${ECR_BACKEND_IMAGE_URI}
+      - printf '[{"name":"registry-frontend","imageUri":"%s"}]' ${ECR_BACKEND_IMAGE_URI} > imagedefinitions_backend.json
+artifacts:
+  files:
+    - imagedefinitions_backend.json
+    - imagedefinitions_frontend.json
