@@ -254,9 +254,8 @@ export default {
       }
 
       this.new_comp["shareholders"] = this.shareholders
-      const apiurl = window.location.host == "registryfrontend"  ? "http://registryapi" : "127.0.0.1"
+      const apiurl = window.location.host == "registryfrontend"  ? "http://registryapi" : ""
       const path = apiurl + ':5000/company/';
-      console.log(window.location.host)
       axios.post(path, this.new_comp)
           .then((res) => {
             if (res.status == 201) {
