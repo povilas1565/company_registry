@@ -17,10 +17,7 @@ flask-migrate = "*"
 flask-appbuilder = "*"
 pytest-flask-sqlalchemy = "*"
 black = "*"
-flask-marshmallow = "*"
-sqlalchemy-serializer = "*"
-fastapi = "*"
-psycopg2-binary = "*"
+gunicorn = "*"
 
 [dev-packages]
 
