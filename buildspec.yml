@@ -26,12 +26,12 @@ phases:
       #push frontend image to ECR and create imagedefinitions file
       - docker tag src_frontend:latest ${ECR_FRONTEND_IMAGE_URI}
       - docker push ${ECR_FRONTEND_IMAGE_URI}
-      - printf '[{"name":"registry-frontend","imageUri":"%s"}]' ${ECR__FRONTEND_IMAGE_URI} > imagedefinitions_frontend.json
+      - printf '[{"name":"registry-frontend","imageUri":"%s"}]' ${ECR_FRONTEND_IMAGE_URI} > imagedefinitions_frontend.json
 
       #push backend image to ECR and create imagedefinitions file
       - docker tag src_api:latest ${ECR_BACKEND_IMAGE_URI}
       - docker push ${ECR_BACKEND_IMAGE_URI}
-      - printf '[{"name":"registry-frontend","imageUri":"%s"}]' ${ECR_BACKEND_IMAGE_URI} > imagedefinitions_backend.json
+      - printf '[{"name":"registry-backend","imageUri":"%s"}]' ${ECR_BACKEND_IMAGE_URI} > imagedefinitions_backend.json
 artifacts:
   files:
     - imagedefinitions_backend.json
