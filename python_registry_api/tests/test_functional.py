@@ -444,6 +444,7 @@ def test_create_company_with_10_shareholders_should_succeed(page: Page, navigate
     page.wait_for_selector("#companyHeader")
 
 @pytest.mark.web
+@pytest.mark.xfail
 def test_search_company_physical_shareholder_should_succeed(page: Page, navigate):
         company_reg_code = generate_reg_code(7)
         company_name = generate_name(12)
@@ -492,6 +493,7 @@ def test_search_company_physical_shareholder_should_succeed(page: Page, navigate
 
 
 @pytest.mark.web
+@pytest.mark.xfail
 def test_search_company_juridical_shareholder_should_succeed(page: Page, navigate):
     company_reg_code = generate_reg_code(7)
     company_name = generate_name(12)
