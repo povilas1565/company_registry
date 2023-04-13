@@ -23,16 +23,16 @@ phases:
       - docker-compose up --abort-on-container-exit --build
   post_build:
     commands:
-      #push frontend image to ECR and create imagedefinitions file
+      #push frontend image to ECR
       - docker tag src_frontend:latest ${ECR_FRONTEND_IMAGE_URI}
       - docker push ${ECR_FRONTEND_IMAGE_URI}
-      - printf '[{"name":"registry-frontend","imageUri":"%s"}]' ${ECR_FRONTEND_IMAGE_URI} > imagedefinitions_frontend.json
 
-      #push backend image to ECR and create imagedefinitions file
+
+      #push backend image to ECR
       - docker tag src_api:latest ${ECR_BACKEND_IMAGE_URI}
       - docker push ${ECR_BACKEND_IMAGE_URI}
-      - printf '[{"name":"registry-backend","imageUri":"%s"}]' ${ECR_BACKEND_IMAGE_URI} > imagedefinitions_backend.json
+      - create imagedefinitions file
+      - printf '[{"name":"registry-backend","imageUri":"'$ECR_BACKEND_IMAGE_URI'"},{"name":"registry-frontend","imageUri":"'$ECR_FRONTEND_IMAGE_URI'"}]'  > imagedefinitions.json
 artifacts:
   files:
-    - imagedefinitions_backend.json
-    - imagedefinitions_frontend.json
+    - imagedefinitions.json

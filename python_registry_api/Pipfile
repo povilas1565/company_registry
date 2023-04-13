@@ -18,6 +18,7 @@ flask-appbuilder = "*"
 pytest-flask-sqlalchemy = "*"
 black = "*"
 gunicorn = "*"
+psycopg2-binary = "*"
 
 [dev-packages]
 
