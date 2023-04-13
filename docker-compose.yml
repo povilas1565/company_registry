@@ -25,5 +25,7 @@ services:
     build: ./vue_registry_frontend
     command: "nginx -g \"daemon off;\""
     hostname: registryfrontend
+    environment:
+      - NODE_ENV="test"
     ports:
       - 80:80
