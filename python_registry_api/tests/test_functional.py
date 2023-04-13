@@ -353,6 +353,7 @@ def test_update_add_shareholder_empty_capital_should_fail(
     assert page.locator("#errorMessage").inner_html() == "All shareholders must have share capital"
 
 @pytest.mark.web
+
 def test_update_insufficient_capital_should_fail(
     page: Page, starting_company
 ) -> None:

@@ -26,6 +26,6 @@ services:
     command: "nginx -g \"daemon off;\""
     hostname: registryfrontend
     environment:
-      - NODE_ENV="test"
+      - NODE_ENV=development
     ports:
       - 80:80
