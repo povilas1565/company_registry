@@ -17,15 +17,9 @@ services:
     hostname: testapi
     ports:
       - 5000:5000
-    depends_on:
-      - db
   frontend:
     build: ./vue_registry_frontend
     command: "nginx -g \"daemon off;\""
     hostname: testfrontend
     ports:
       - 80:80
-  db:
-    image: postgres:13-alpine
-    env_file:
-      - ./env/postgres.dev
