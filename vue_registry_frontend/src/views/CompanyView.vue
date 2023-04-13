@@ -188,7 +188,8 @@ export default {
   },
   methods: {
     getCompany() {
-      const path = 'http://registryapi:5000/company/' + this.$route.params.reg_code;
+      const apiurl = process.env.NODE_ENV === "test" ? "http://registryapi" : "http://ec2co-ecsel-1gcsef12y4ymn-605589819.eu-north-1.elb.amazonaws.com"
+      const path = apiurl + ':5000/company/' + this.$route.params.reg_code;
       axios.get(path)
         .then((res) => {
             this.company = res.data
@@ -219,7 +220,8 @@ export default {
           return
       }
 
-      const path = 'http://registryapi:5000/company/'+this.company["reg_code"];
+      const apiurl = process.env.NODE_ENV === "test" ? "http://registryapi" : "http://ec2co-ecsel-1gcsef12y4ymn-605589819.eu-north-1.elb.amazonaws.com"
+      const path = apiurl + ':5000/company/'+this.company["reg_code"];
       axios.put(path, this.company)
           .then((res) => {
             if (res.status == 201) {

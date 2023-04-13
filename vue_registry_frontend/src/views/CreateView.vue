@@ -254,7 +254,8 @@ export default {
       }
 
       this.new_comp["shareholders"] = this.shareholders
-      const path = 'http://registryapi:5000/company/';
+      const apiurl = process.env.NODE_ENV === "test" ? "http://registryapi" : "http://ec2co-ecsel-1gcsef12y4ymn-605589819.eu-north-1.elb.amazonaws.com"
+      const path = apiurl + ':5000/company/';
       axios.post(path, this.new_comp)
           .then((res) => {
             if (res.status == 201) {

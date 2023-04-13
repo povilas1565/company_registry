@@ -150,7 +150,8 @@ export default {
 
 
     getPersons() {
-      const path = 'http://registryapi:5000/person/?q=' + this.idCode;
+      const apiurl = process.env.NODE_ENV === "test" ? "http://registryapi" : "http://ec2co-ecsel-1gcsef12y4ymn-605589819.eu-north-1.elb.amazonaws.com"
+      const path = apiurl +':5000/person/?q=' + this.idCode;
       if (this.idCode.length > 2) {
         axios.get(path, {
           headers: {

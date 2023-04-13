@@ -115,8 +115,8 @@ export default {
       }
     },
     getCompanies() {
-
-      const path = 'http://registryapi:5000/company/?q_shareholder=' + this.regCode;
+      const apiurl = process.env.NODE_ENV === "test" ? "http://registryapi" : "http://ec2co-ecsel-1gcsef12y4ymn-605589819.eu-north-1.elb.amazonaws.com"
+      const path = apiurl+':5000/company/?q_shareholder=' + this.regCode;
       if (this.regCode.length > 2) {
         axios.get(path, {
           headers: {
