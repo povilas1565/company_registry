@@ -12,11 +12,8 @@ from models import Company, Shareholder, PhysicalPerson
 
 def create_app(config=configmodule.Config):
     app = Flask(__name__)
-
     app.config.from_object(config)
-
     db.init_app(app)
-
     Migrate(app, db)
 
     CORS(app, resources={r"/*": {"origins": "*"}})
