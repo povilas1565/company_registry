@@ -150,7 +150,7 @@ export default {
 
 
     getPersons() {
-      const apiurl = window.location.host == "registryfrontend"  ? "http://registryapi" : "http://ec2co-ecsel-1gcsef12y4ymn-605589819.eu-north-1.elb.amazonaws.com"
+      const apiurl = window.location.host == "registryfrontend"  ? "http://registryapi" : "127.0.0.1"
       const path = apiurl +':5000/person/?q=' + this.idCode;
       if (this.idCode.length > 2) {
         axios.get(path, {
