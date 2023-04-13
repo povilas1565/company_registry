@@ -26,7 +26,7 @@ export default {
   },
   methods: {
     getCompanies() {
-      const apiurl = window.location.host == "registryfrontend"  ? "http://registryapi" : "localhost"
+      const apiurl = window.location.host == "registryfrontend"  ? "http://registryapi" : "http://localhost"
       const path = apiurl + ':5000/company/?q_home='+this.searchstring;
       if (this.searchstring.length > 2) {
       axios.get(path, {
