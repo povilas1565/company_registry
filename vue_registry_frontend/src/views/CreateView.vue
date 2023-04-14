@@ -258,6 +258,9 @@ export default {
       const path = apiurl + ':5000/company/';
       axios.post(path, this.new_comp)
           .then((res) => {
+            console.log(res.data);
+            console.log(res.status);
+            console.log(res.headers);
             if (res.status == 201) {
               router.push({name: 'company', params: {reg_code: this.new_comp['reg_code']}})
             }})
