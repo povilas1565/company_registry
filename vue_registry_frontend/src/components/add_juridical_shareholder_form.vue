@@ -115,7 +115,7 @@ export default {
       }
     },
     getCompanies() {
-      const apiurl = window.location.host == "registryfrontend"  ? "http://registryapi" : "127.0.0.1"
+      const apiurl = window.location.host == "registryfrontend"  ? "http://registryapi" : "http://localhost"
       const path = apiurl+':5000/company/?q_shareholder=' + this.regCode;
       if (this.regCode.length > 2) {
         axios.get(path, {

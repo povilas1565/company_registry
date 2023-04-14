@@ -188,7 +188,7 @@ export default {
   },
   methods: {
     getCompany() {
-      const apiurl = window.location.host == "registryfrontend"  ? "http://registryapi" : "127.0.0.1"
+      const apiurl = window.location.host == "registryfrontend"  ? "http://registryapi" : "http://localhost"
       const path = apiurl + ':5000/company/' + this.$route.params.reg_code;
       axios.get(path)
         .then((res) => {
@@ -220,7 +220,7 @@ export default {
           return
       }
 
-      const apiurl = window.location.host == "registryfrontend"  ? "http://registryapi" : "127.0.0.1"
+      const apiurl = window.location.host == "registryfrontend"  ? "http://registryapi" : "http://localhost"
       const path = apiurl + ':5000/company/'+this.company["reg_code"];
       axios.put(path, this.company)
           .then((res) => {
