@@ -200,7 +200,7 @@ export default {
       axios.get(path)
         .then((res) => {
 
-            this.company = res.data
+          this.company = res.data
           this.calculateShareCapital()
         })
         .catch((error) => {
