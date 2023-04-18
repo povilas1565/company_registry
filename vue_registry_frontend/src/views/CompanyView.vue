@@ -16,23 +16,24 @@
   v-else-if="this.success">
       Successfully updated
       <button
-      ype="button"
+      type="button"
       class="btn-close"
       data-bs-dismiss="alert"
       aria-label="Close">
       </button>
   </div>
 
-<div class="container">
-    <div class="row row-cols-lg-auto justify-content-start mt-5 p-3 border rounded border-info">
+<div v-if="this.company" class="container">
+    <div  class="row row-cols-lg-auto justify-content-start mt-5 p-3 border rounded border-info">
       <div class="col-md-12">
-        <h1 id="companyHeader">{{this.company['reg_code'] + ' - ' + this.company['name'].toUpperCase()}}<sup></sup> </h1>
+        <h1  id="companyHeader">{{this.company['reg_code'] + ' - ' + this.company['name'].toUpperCase()}}</h1>
         <div class="row justify-content-start">
 <span class="text-start">First registered: {{this.company['reg_date']}}</span>
 
       </div>
         <div class="row justify-content-start">
-<span class="text-start">Total Share Amount: {{this.totalShareCapital}}</span>
+<span id="totalShareAmount" class="text-start"
+>Total Share Capital: {{this.totalShareCapital}}</span>
 
       </div>
       </div>
@@ -41,10 +42,14 @@
 
     </div>
 
+ <div class="row mt-3 ms-2">
 
-      <div class="row mt-4 row-cols-md justify-content-start">
-        <div class="col-md-6 justify-content-start">
-        <u><h3>Shareholders:</h3></u>
+
+<div class="col-md-auto justify-content-start">
+
+        <h3><u>Shareholders:</u></h3>
+  </div>
+  <div class="col-md-auto">
           <button
               v-if="!this.show_form"
               type="button"
@@ -53,20 +58,21 @@
               id="showFormButton"
           :hidden="!this.edit">Add
           </button>
-          </div>
-        <div class="col-md-6 justify-content-end d-flex">
-        <button
-              type="button"
-              class="btn text-primary "
+</div>
+
+        <div class="col justify-content-end d-flex align-items-end">
+        <span
+              class="btn text-primary text-end"
               @click="this.edit = !this.edit"
               id="editButton"
     ><BootstrapIcon
               icon="pencil-square"
-            /><u> edit</u></button>
+            /><u> edit</u></span>
         </div>
-        </div>
+ </div>
 
-      <div v-if="this.company['shareholders'].length" >
+
+      <div >
       <table  id="shareholdersTable" class="table table-borderless">
         <thead>
           <tr>
@@ -160,10 +166,11 @@
 <div class="row justify-content-center m-3"
            v-if="!this.show_form">
     <button type="button" class="btn btn-secondary btn-block col-md-3 m-3" @click="this.$router.push({ path: '/'})">Back</button>
-<button type="button"
-            class="btn btn-primary btn-block col-md-3 m-3"
-            @click="updateCompany()"
-            id="updateButton">Update</button>
+<button v-if="this.edit"
+        type="button"
+        class="btn btn-primary btn-block col-md-3 m-3"
+        @click="updateCompany()"
+        id="updateButton">Update</button>
 </div>
 </template>
 
@@ -183,7 +190,7 @@ export default {
       error:undefined,
       company:undefined,
       edit:false,
-      totalShareCapital:0
+      totalShareCapital:undefined
     }
   },
   methods: {
@@ -192,17 +199,21 @@ export default {
       const path = apiurl + ':5000/company/' + this.$route.params.reg_code;
       axios.get(path)
         .then((res) => {
+
             this.company = res.data
-
-
+          this.calculateShareCapital()
         })
         .catch((error) => {
           // eslint-disable-next-line
+          if (error.response.status == 404){
           this.error =error.response.data["Error"]
-        })
+          }}
+         )
+
+
     },updateCompany() {
-      this.error = undefined;
-      var reg_codes = []
+      this.error = "";
+      let reg_codes = []
       for (let i = 0; i < this.company['shareholders'].length; i++) {
         if(reg_codes.includes(this.company['shareholders'][i]["reg_code"]))
         {
@@ -233,33 +244,33 @@ export default {
           .catch((error) => {
             // eslint-disable-next-line
             if (error.response.status == 400) {
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
 
             this.error = error.response.data["Error"]
               }
           });
     },
     calculateShareCapital() {
-      this.totalShareCapital = 0
+
+      if(this.company){
+        this.totalShareCapital = 0
       this.company['shareholders'].forEach(sh => {
         this.totalShareCapital += sh['share_amount']
-      })
-},    removeShareholder(index) {
+      })}
+},
+    removeShareholder(index) {
       this.company['shareholders'].splice(index, 1)
+      this.totalShareCapital = 0
+      this.company['shareholders'].forEach(sh => {
+        this.totalShareCapital += sh['share_amount']})
     },
-        addShareholder(shareholder) {
+    addShareholder(shareholder) {
       this.company['shareholders'].push(JSON.parse(JSON.stringify(shareholder)))
     },
-  },
-created() {
-    this.getCompany();
 },
-  mounted(){
-    this.calculateShareCapital()
-  }
-};
+  created() {
+    this.getCompany();
+
+}}
 </script>
 <style>
 

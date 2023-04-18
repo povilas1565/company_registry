@@ -35,14 +35,11 @@ export default {
  }
 })
         .then((res) => {
-          console.log(res)
           this.companies = res.data['result']
         })
         .catch((error) => {
           // eslint-disable-next-line
           console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
 
         });
     }

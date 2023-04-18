@@ -20,13 +20,23 @@
         type="text"
         maxlength="11"
         required
+                :disabled="this.locked"
         @input="this.getPersons()"
-    /><span class="input-group-text"><BootstrapIcon
-              icon="search"
+        placeholder="Type to search..."
+    /><span id="unlock" @click="this.unlock()" v-if="this.locked" class="input-group-text unselect-button"><BootstrapIcon
+              icon="x"
             /></span>
     </div>
+
+    <ul v-if="this.persons.length"
+    class="w-full rounded bg-white border border-gray-300 px-4 py-2 space-y-1 absolute z-10" style="list-style-type:none;">
+      <li id="autofillResult" v-for="person in this.persons" :key="person.reg_code"
+      class="px-1 pt-1 pb-2 font-bold border-b border-gray-200 text-start hover-effect"
+      @click="this.selectPerson(person)">
+        {{person.reg_code}} - {{person.firstName}} {{person.lastName}}</li>
+    </ul>
     <strong id="lengthError" class="justify-content-start d-flex error-message" v-if="id_error">{{this.id_error}}</strong>
- </div>
+  </div>
 
 
 </div>
@@ -86,7 +96,6 @@ export default {
 
   data() {
   return {
-    results:false,
     locked:false,
     persons: [],
     id_error:undefined,
@@ -115,8 +124,14 @@ export default {
 }
     },
     validateName() {
-      this.fname = this.fname.replaceAll(/[^a-zA-Z ]/g, "");
-      this.lname = this.lname.replaceAll(/[^a-zA-Z ]/g, "");
+      if (this.fname) {
+      this.fname = this.fname.replaceAll(/[^a-zA-Z öäõüÖÄÜÕ]/g, "");
+      this.fname = this.fname.toUpperCase();}
+      if (this.lname) {
+      this.lname = this.lname.replaceAll(/[^a-zA-Z öäõüÖÄÜÕ]/g, "");
+      this.lname = this.lname.toUpperCase();}
+
+
     },
     submit() {
       this.id_error = undefined;
@@ -124,10 +139,10 @@ export default {
         this.id_error = "ID code must be exactly 11 digits long"
         return
       } else {
-        this.id_error = undefined;
+        this.locked = false
       }
 
-      if (this.fname && this.lname && this.idCode && !this.id_error) {
+      if (this.fname && this.lname && this.idCode) {
         if (this.founder) {
           this.shareholder["founder"] = true
         }
@@ -160,10 +175,9 @@ export default {
         })
             .then((res) => {
               if (res.data['result'].length) {
-                this.results=true
               this.persons = res.data['result']}
               else {
-                this.results = false
+                this.persons= []
               }
               })
             .catch((error) => {
@@ -178,7 +192,13 @@ export default {
       this.fname = person["firstName"]
       this.lname = person["lastName"]
       this.persons = []
-      this.results = false
+      this.locked = true
+    },
+    unlock(){
+      this.idCode = undefined
+      this.fname = undefined
+      this.lname = undefined
+      this.locked = false
     }
   }
 }
@@ -190,4 +210,10 @@ export default {
     color:red;
     text-align: left;
   }
+  .hover-effect:hover {
+    opacity: 0.5;
+}
+  li { cursor: pointer; }
+
+  .unselect-button { cursor: pointer; }
 </style>

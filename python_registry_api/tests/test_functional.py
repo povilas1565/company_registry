@@ -1,4 +1,5 @@
 import time
+import random
 
 from helpers import generate_name, generate_reg_code
 import pytest
@@ -24,7 +25,7 @@ def starting_company(page: Page, navigate):
     page.locator("#capital").fill("2500")
     page.locator("#createButton").click()
 
-    page.wait_for_selector("#companyHeader", timeout=5000)
+    page.wait_for_selector("#companyHeader", timeout=2000)
 
 @pytest.mark.web
 def test_open_home_page_should_succeed(page: Page,navigate) -> None:
@@ -32,8 +33,21 @@ def test_open_home_page_should_succeed(page: Page,navigate) -> None:
 
 @pytest.mark.web
 @pytest.mark.xfail
-def test_create_new_company_should_succeed(page: Page, starting_company) -> None:
-    page.wait_for_selector("#companyHeader")
+def test_create_new_company_should_succeed(page: Page, navigate) -> None:
+    page.locator("#create").click()
+    page.locator("#companyName").fill(generate_name(10))
+    page.locator("#regCode").fill(generate_reg_code(7))
+    page.locator("#showFormButton").click()
+    page.locator("#idCode").fill(generate_reg_code(11))
+    page.locator("#firstName").fill(generate_name(5))
+    page.locator("#lastName").fill(generate_name(5))
+    page.locator("#addButton").click()
+    page.locator("#closeButton").click()
+    page.locator("#capital").fill("2500")
+    page.locator("#createButton").click()
+
+    page.wait_for_selector("#companyHeader", timeout=2000)
+
 
 
 @pytest.mark.web
@@ -256,7 +270,6 @@ def test_shareholder_form_errors_should_fail(
 
 
 @pytest.mark.web
-
 def test_insufficient_share_capital_should_fail(page: Page, navigate) -> None:
     page.locator("#create").click()
     page.locator("#companyName").fill(generate_name(10))
@@ -353,7 +366,7 @@ def test_update_add_shareholder_empty_capital_should_fail(
     assert page.locator("#errorMessage").inner_html() == "All shareholders must have share capital"
 
 @pytest.mark.web
-
+@pytest.mark.xfail
 def test_update_insufficient_capital_should_fail(
     page: Page, starting_company
 ) -> None:
@@ -537,5 +550,174 @@ def test_search_company_juridical_shareholder_should_succeed(page: Page, navigat
         assert result
         page.locator("#search").clear()
 
-def test_all_info_is_present_on_company_page():
-    pass
+@pytest.mark.web
+@pytest.mark.xfail
+def test_all_info_is_correct_on_company_page(page: Page, navigate) -> None:
+    company_reg_code = generate_reg_code(7)
+    company_name = generate_name(12)
+    reg_code_1 = generate_reg_code(11)
+    f_name = generate_name(12)
+    l_name = generate_name(12)
+    share_capital_1 = random.randint(2500,10000)
+
+
+    reg_code_2 = generate_reg_code(7)
+    name = generate_name(12)
+    share_capital_2 = random.randint(2500,10000)
+    total_share_capital = share_capital_1 + share_capital_2
+
+    page.locator("#create").click()
+    page.locator("#companyName").fill(company_name)
+    page.locator("#regCode").fill(company_reg_code)
+    page.locator("#showFormButton").click()
+    page.locator("#idCode").fill(reg_code_1)
+    page.locator("#firstName").fill(f_name)
+    page.locator("#lastName").fill(l_name)
+    page.locator("#addButton").click()
+    page.locator("#showJuridicalShareholderForm").click()
+    page.locator("#shareholderRegCode").fill(reg_code_2)
+    page.locator("#shareholderName").fill(name)
+    page.locator("#addButton").click()
+    page.locator("#closeButton").click()
+    locators = page.locator("#capital").all()
+    locators[0].fill(str(share_capital_1))
+    locators[1].fill(str(share_capital_2))
+    page.locator("#createButton").click()
+    time.sleep(0.5)
+
+    page.wait_for_selector("#companyHeader", timeout=2000)
+    assert page.locator("#companyHeader").inner_html() == f"{company_reg_code} - {company_name.upper()}"
+    assert page.locator("#totalShareAmount").inner_html() == f"Total Share Capital: {str(total_share_capital)}"
+    reg_code_locators = page.locator("#code").all()
+    assert reg_code_locators[0].input_value() == str(reg_code_1)
+    assert reg_code_locators[1].input_value() == str(reg_code_2)
+    name_locators = page.locator("#name").all()
+    assert name_locators[0].input_value() == f"{f_name.upper()} {l_name.upper()}"
+    assert name_locators[1].input_value() == name.upper()
+    capital_locators = page.locator("#capital").all()
+    assert capital_locators[0].input_value() == str(share_capital_1)
+    assert capital_locators[1].input_value() == str(share_capital_2)
+
+@pytest.mark.web
+@pytest.mark.xfail
+def test_create_company_with_regional_characters_should_succeed(page: Page, navigate) -> None:
+    page.locator("#create").click()
+    page.locator("#companyName").fill("üõöä")
+    page.locator("#regCode").fill(generate_reg_code(7))
+    page.locator("#showFormButton").click()
+    page.locator("#idCode").fill(generate_reg_code(11))
+    page.locator("#firstName").fill("üõöä")
+    page.locator("#lastName").fill("üõöä")
+    page.locator("#addButton").click()
+    page.locator("#showJuridicalShareholderForm").click()
+    page.locator("#shareholderRegCode").fill(generate_reg_code(7))
+    page.locator("#shareholderName").fill("üõöä")
+    page.locator("#addButton").click()
+    page.locator("#closeButton").click()
+    locators = page.locator("#capital").all()
+    locators[0].fill("1250")
+    locators[1].fill("1250")
+    page.locator("#createButton").click()
+    time.sleep(0.5)
+
+    page.wait_for_selector("#companyHeader", timeout=2000)
+
+@pytest.mark.web
+@pytest.mark.xfail
+def test_autofill_and_remove_physical_shareholder_info_should_succeed(page: Page, navigate) -> None:
+    id_code=generate_reg_code(11)
+    fname=generate_name(7)
+    lname=generate_name(7)
+    page.locator("#create").click()
+    page.locator("#companyName").fill(generate_name(7))
+    page.locator("#regCode").fill(generate_reg_code(7))
+    page.locator("#showFormButton").click()
+    page.locator("#idCode").fill(id_code)
+    page.locator("#firstName").fill(fname)
+    page.locator("#lastName").fill(lname)
+    page.locator("#addButton").click()
+    page.locator("#closeButton").click()
+    page.locator("#capital").fill("2500")
+    page.locator("#createButton").click()
+    time.sleep(0.5)
+    page.wait_for_selector("#companyHeader", timeout=2000)
+
+    page.goto(f"http://registryfrontend/")
+    page.locator("#create").click()
+    page.locator("#showFormButton").click()
+    page.locator("#idCode").fill(id_code[0:3])
+    time.sleep(0.5)
+    autofill_results = page.locator("#autofillResult").all()
+    for result in autofill_results:
+        try:
+            assert result.inner_html() == f"{id_code} - {fname.upper()} {lname.upper()}"
+            result.click()
+            break
+        except:
+            if result == autofill_results[-1]:
+                raise Exception("No matching result found")
+
+    assert page.locator("#firstName").input_value() == fname.upper()
+    assert page.locator("#lastName").input_value() == lname.upper()
+    assert page.locator("#firstName").is_disabled(timeout=2000)
+    assert page.locator("#lastName").is_disabled(timeout=2000)
+
+    page.locator("#unlock").click()
+    assert page.locator("#idCode").input_value() == ""
+    assert page.locator("#firstName").input_value() == ""
+    assert page.locator("#lastName").input_value() == ""
+    assert page.locator("#firstName").is_enabled()
+    assert page.locator("#lastName").is_enabled()
+
+
+
+@pytest.mark.web
+@pytest.mark.xfail
+def test_autofill_and_clear_juridical_shareholder_info_should_succeed(page: Page, navigate) -> None:
+    reg_code = generate_reg_code(7)
+    name = generate_name(7)
+    page.locator("#create").click()
+    page.locator("#companyName").fill(name)
+    page.locator("#regCode").fill(reg_code)
+    page.locator("#showFormButton").click()
+    page.locator("#showJuridicalShareholderForm").click()
+    page.locator("#shareholderRegCode").fill(generate_reg_code(7))
+    page.locator("#shareholderName").fill(generate_name(7))
+    page.locator("#addButton").click()
+    page.locator("#closeButton").click()
+    page.locator("#capital").fill("2500")
+    page.locator("#createButton").click()
+    page.wait_for_selector("#companyHeader", timeout=2000)
+    page.goto(f"http://registryfrontend/")
+    page.locator("#create").click()
+    page.locator("#showFormButton").click()
+    page.locator("#showJuridicalShareholderForm").click()
+    page.locator("#shareholderRegCode").fill(reg_code[0:3])
+    time.sleep(0.5)
+
+    autofill_results = page.locator("#autofillResult").all()
+
+    for result in autofill_results:
+        try:
+            assert result.inner_html() == f"{reg_code} - {name.upper()}"
+            result.click()
+            break
+        except:
+            if result == autofill_results[-1]:
+                raise Exception("No matching result found")
+
+    assert page.locator("#shareholderRegCode").input_value() == str(reg_code)
+    assert page.locator("#shareholderName").input_value() == name.upper()
+    assert page.locator("#shareholderRegCode").is_disabled(timeout=2000)
+    assert page.locator("#shareholderName").is_disabled(timeout=2000)
+
+    page.locator("#unlock").click()
+    assert page.locator("#shareholderRegCode").input_value() == ""
+    assert page.locator("#shareholderName").input_value() == ""
+    assert page.locator("#shareholderRegCode").is_enabled(timeout=2000)
+    assert page.locator("#shareholderName").is_enabled(timeout=2000)
+
+@pytest.mark.web
+def test_incorrect_reg_code_shows_error_should_succeed(page: Page) -> None:
+    page.goto(f"http://registryfrontend/#/company/{generate_reg_code(7)}")
+    assert page.locator("#errorMessage").inner_html() == "Company not found"

@@ -17,16 +17,25 @@
         maxlength="7"
         id="shareholderRegCode"
         type="text"
+                :disabled="this.locked"
         required
         @input="this.getCompanies()"
-    />    <span class="input-group-text"><BootstrapIcon
-              icon="search"
-            /></span>
-        </div>
+        placeholder="Type to search..."
+    />    <span id="unlock" @click="this.unlock()" v-if="this.locked" class="input-group-text unselect-button"><BootstrapIcon
+              icon="x"
+            /></span> </div>
+              <ul v-if="this.companies.length"
+    class="w-full rounded bg-white border border-gray-300 px-4 py-2 space-y-1 absolute z-10" style="list-style-type:none;">
+      <li id="autofillResult" v-for="company in this.companies" :key="company.reg_code"
+      class="px-1 pt-1 pb-2 font-bold border-b border-gray-200 text-start hover-effect"
+      @click="this.selectCompany(company)">
+        {{company.reg_code}} - {{company.name}}</li>
+    </ul>
+
 
         <strong id="lengthError" class="justify-content-start d-flex error-message" v-if="id_error">{{this.id_error}}</strong>
-  </div></div>
-
+  </div>
+</div>
 
 <div class="row mb-3 justify-content-center">
     <label for="companyName" class="col-md-2 form-label col-form-label">Name</label>
@@ -76,10 +85,8 @@ export default {
   },
   watch: {
     regCode(value) {
-
       this.validate_reg_code(value)
     }
-
   },
 
   methods: {
@@ -88,20 +95,18 @@ export default {
       if (value) {
         this.regCode = value.replace(/[^0-9]/gi, "");
 
-        if (!value.length) {
-          this.id_error = undefined;
-        } else if (value.length != 7) {
-          this.id_error = "Registration code must be exactly 7 digits long"
-        } else {
-          this.id_error = undefined;
-        }
       }
     },
     validateName() {
-      this.name = this.name.replaceAll(/[^a-zA-Z ]/g, "");
+      this.name = this.name.replaceAll(/[^a-zA-Z öäõüÖÄÜÕ]/g, "");
+      this.name = this.name.toUpperCase()
     },
     submit() {
-      if (this.name && this.regCode && !this.id_error) {
+      if (this.regCode.length != 7) {
+        this.id_error = "Registration code must be exactly 7 digits long"
+        return
+      }
+      if (this.name && this.regCode) {
         if (this.founder) {
           this.shareholder["founder"] = true
         }
@@ -110,6 +115,7 @@ export default {
         this.$emit("addShareholder", this.shareholder);
         this.regCode = undefined;
         this.name = undefined;
+        this.locked = false
       } else {
         this.error = "All fields must be filled"
       }
@@ -118,11 +124,7 @@ export default {
       const apiurl = window.location.host == "registryfrontend"  ? "http://registryapi" : "http://registry-backend-alb-503252945.eu-north-1.elb.amazonaws.com"
       const path = apiurl+':5000/company/?q_shareholder=' + this.regCode;
       if (this.regCode.length > 2) {
-        axios.get(path, {
-          headers: {
-            "Access-Control-Allow-Origin": 'localhost'
-          }
-        })
+        axios.get(path)
             .then((res) => {
               console.log(res)
               this.companies = res.data['result']
@@ -136,10 +138,16 @@ export default {
       }
 
     },
-    selectComp(company) {
+    selectCompany(company) {
       this.regCode = company["reg_code"]
       this.name = company["name"]
       this.companies = []
+      this.locked = true
+    },
+    unlock(){
+      this.regCode = undefined
+      this.name = undefined
+      this.locked = false
     }
   }
 }
@@ -156,4 +164,8 @@ export default {
 .hover-effect:hover {
     opacity: 0.5;
 }
+
+  li { cursor: pointer; }
+
+  .unselect-button { cursor: pointer; }
 </style>
