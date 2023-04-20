@@ -1,4 +1,5 @@
 <template>
+
   <div class="alert alert-warning mt-1 mb-3 alert-dismissible fade show" v-if="this.error">
     <div id="errorMessage">{{ this.error }}</div>
       <button
@@ -8,8 +9,6 @@
         aria-label="Close">
       </button>
   </div>
-
-
 
   <div class="row justify-content-center">
     <div class="col-md-12">
@@ -57,9 +56,10 @@
             <label for="totalCapital">Total Share Capital</label>
           </div>
         </div>
-
       </form>
+
       <hr>
+
       <div class="row row-cols-lg-auto g-3 align-items-start justify-content-start m-3">
         <h3 class="m-3">Shareholders:</h3>
         <button
@@ -131,7 +131,6 @@
             <label class="form-check-label" for="showJuridicalShareholderForm">Juridical Shareholder</label>
           </div>
         </div>
-
         <Add_physical_shareholder_form
             founder
             v-if="this.physical"
@@ -145,14 +144,18 @@
       </div>
     </div>
   </div>
+
   <div class="row justify-content-center m-3"
        v-if="!this.show_form">
-    <button type="button" class="btn btn-secondary btn-block col-md-3 m-3" @click="this.$router.push({ path: '/'})">Back</button>
+    <button type="button"
+            class="btn btn-secondary btn-block col-md-3 m-3"
+            @click="this.$router.push({ path: '/'})">Back</button>
     <button type="button"
             class="btn btn-primary btn-block col-md-3 m-3"
             @click="postCompany()"
             id="createButton">Create company</button>
   </div>
+
 </template>
 
 <script>
@@ -161,8 +164,7 @@ import Add_physical_shareholder_form from "@/components/add_physical_shareholder
 import Add_juridical_shareholder_form from "@/components/add_juridical_shareholder_form.vue";
 import router from "@/router";
 import BootstrapIcon from '@dvuckovic/vue3-bootstrap-icons';
-// eslint-disable-next-line no-unused-vars
-import isLetter from "@/helpers/isLetter";
+
 
 export default {
   name: 'CreateView',
@@ -186,22 +188,24 @@ export default {
     }
   },
   watch:{
+      // watches and sends input from registration code to validation
     regCode(value) {
       this.validate_reg_code(value)
     }
   },
-
   methods: {
     validate_reg_code(value) {
+    // removes all non numbers from inputted registration code
       if (value) {
       this.regCode = value.replace(/[^0-9]/gi, "");
-
       }
     },
     postCompany() {
+      // validates inputs and creates new company object that will be sent to the API
       this.new_comp["reg_code"] = this.regCode
       this.error = undefined;
       let reg_codes = []
+
       for (let i = 0; i < this.shareholders.length; i++) {
         if(reg_codes.includes(this.shareholders[i]["reg_code"]))
         {
@@ -222,7 +226,6 @@ export default {
           this.error = "All fields must be filled"
           return
       }
-
       if (this.new_comp['reg_code'].length != 7) {
           this.error = "Registration code must be 7 digits long and contain only numbers"
           return
@@ -233,46 +236,41 @@ export default {
       const path = apiurl + ':5000/company/';
       axios.post(path, this.new_comp)
           .then((res) => {
-
             if (res.status == 201) {
               router.push({name: 'company', params: {reg_code: this.new_comp['reg_code']}})
             }})
           .catch((error) => {
-            console.log(error.response.data);
             if (error.response.status == 400) {
-
-
             this.error = error.response.data["Error"]
               }
           });
     },
     addShareholder(shareholder) {
+      // adds the shareholder emitted by child component to the company object
       this.shareholders.push(JSON.parse(JSON.stringify(shareholder)))
     },
     removeShareholder(index) {
+      // removes shareholder based on the row-index
       this.shareholders.splice(index, 1)
     },
     validateName() {
+      // removes all non letters and uppercases inputted company name
       this.new_comp['name'] = this.new_comp['name'].replaceAll(/[^a-zA-Z öäõüÖÄÜÕ]/g, "");
-
       this.new_comp['name'] = this.new_comp['name'].toUpperCase()
     },
     calculateShareCapital() {
+      // calculates total share capital for all shareholders
       this.totalShareCapital = 0
       this.shareholders.forEach(sh => {
         this.totalShareCapital += sh['share_amount']
       })
     },
   },
-
-computed:{
-
-},
   mounted(){
-    var today = new Date().toISOString().split("T")[0];
+    // set registration date field value and max value to today's date
+    let today = new Date().toISOString().split("T")[0];
     this.new_comp["reg_date"] = today
     document.getElementById('regDate').setAttribute("max", today)
-
   }
 };
 </script>

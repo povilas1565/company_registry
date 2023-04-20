@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar bg-light">
     <div class="container-fluid">
-        <span class="navbar-brand h3 ms-3">Company registry</span>
+        <span class="navbar-brand h3 ms-3">COMPANY REGISTRY</span>
       <nav class="navbar-nav">
         <router-link
             v-if="this.$route.name=='home'"
