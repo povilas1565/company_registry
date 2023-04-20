@@ -1,17 +1,32 @@
 <template>
-  <nav class="navbar bg-light">
-    <div class="container-fluid">
-        <span class="navbar-brand h3 ms-3">COMPANY REGISTRY</span>
-      <nav class="navbar-nav">
-        <router-link
+  <nav class="navbar navbar-expand-lg bg-light">
+    <div class="container-fluid ">
+		<a class="navbar-brand h3 m-3 " href="#">COMPANY REGISTRY</a>
+
+    <ul class="navbar-nav ms-auto m-3 mb-lg-0 ">
+			<li class="nav-item me-2">
+            <router-link
+            class="nav-link"
+            id="about"
+            to="/about"
+            v-if="this.$route.name!='about'"
+        >about</router-link>
+			</li>
+			<li class="nav-item">
+    <router-link
             v-if="this.$route.name=='home'"
-            class="btn btn-primary btn-sm "
+            class="btn btn-primary"
             id="create"
             to="/create"
         >Create new Company</router-link>
-      </nav>
-    </div>
-  </nav>
+			</li>
+    </ul>
+		</div>
+
+	</nav>
+
+
+
 
   <router-view/>
 
