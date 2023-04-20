@@ -1,9 +1,9 @@
 <template>
   <nav class="navbar navbar-expand-lg bg-light">
     <div class="container-fluid ">
-		<a class="navbar-brand h3 m-3 " href="#">COMPANY REGISTRY</a>
+		<a class="navbar-brand h3  mt-2" href="#">COMPANY REGISTRY</a>
 
-    <ul class="navbar-nav ms-auto m-3 mb-lg-0 ">
+    <ul class="navbar-nav ms-auto mb-lg-0 ">
 			<li class="nav-item me-2">
             <router-link
             class="nav-link"
