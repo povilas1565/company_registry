@@ -26,7 +26,9 @@
     <p class="text-start m-4">
     Selecting an option causes the info to be autofilled and the fields become locked for further editing. <br>
       To unlock the fields - click on the button next to the reg/id code field. <br>
-      To add a brand new shareholder, just ignore the dropdown and enter the info.
+      To add a brand new shareholder, just ignore the dropdown and enter the info.<br>
+      After a company is created, it's possible to change shareholders by clicking on the edit button.
+
     </p>
 
 
