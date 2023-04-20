@@ -15,9 +15,9 @@
   <h2 class="text-start m-4">How-to:</h2>
   <p class="text-start m-4">
     The application is initialized with 3 companies:</p>
-  <li class="text-start ms-4">0000000 - NULL AS</li>
     <li class="text-start ms-4">1234567 - TEST AS</li>
   <li class="text-start ms-4">7654321 - TEST OÜ</li>
+    <li class="text-start ms-4">1111111 - FIRST AS</li>
   <p class="text-start m-4">
     Search companies on the main page by company name, registration code or shareholder name/code.<br>
  When adding a shareholder, autocomplete offers choices from the database upon entering reg/id code:<br>  </p>
