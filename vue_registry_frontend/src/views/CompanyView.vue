@@ -1,8 +1,8 @@
 <template>
   <div class="alert alert-warning mt-1 mb-3 alert-dismissible fade show"
-       v-if="this.error"
-       id="errorMessage">
-       {{ this.error }}
+       v-if="this.error">
+       <span id="errorMessage">
+         {{ this.error }}</span>
     <button type="button"
             class="btn-close"
             data-bs-dismiss="alert"
