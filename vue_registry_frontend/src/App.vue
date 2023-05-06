@@ -1,4 +1,7 @@
 <template>
+   <div class="alert alert-danger mt-1 mb-3 alert-dismissible fade show">
+      I have taken the PostgreSQL database offline for now to avoid incurring costs. Will reconfigure the app
+      to use EFS soon.</div>
   <nav class="navbar navbar-expand-lg bg-light">
     <div class="container-fluid ">
 		<a class="navbar-brand h3  mt-2" href="#">COMPANY REGISTRY</a>
