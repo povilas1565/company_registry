@@ -1,3 +1,0 @@
-POSTGRES_USER=registry
-POSTGRES_PASSWORD=supersecretpassword
-POSTGRES_DB=registry-dev
