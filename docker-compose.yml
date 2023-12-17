@@ -1,6 +1,27 @@
 version: '3.8'
 
 services:
+  teamcity-server-instance:
+    image: jetbrains/teamcity-server
+    ports:
+      - "8111:8111"
+    restart: always
+    volumes:
+      - ~/test/teamcity/data:/data/teamcity_server/datadir
+      - ~/test/teamcity/logs:/opt/teamcity/logs
+    networks:
+      - teamcity-network
+
+  teamcity-agent-instance:
+      image: jetbrains/teamcity-agent
+      restart: always
+      volumes:
+        - ~/test/teamcity/agent-conf:/data/teamcity_agent/conf
+      environment:
+        - SERVER_URL=teamcity-server-instance:8111
+      networks:
+        - teamcity-network
+
   tests:
     build:
       context: ./python_registry_api
@@ -44,6 +65,8 @@ services:
       - 9091:9090
     depends_on:
       - app
+    networks:
+      - monitoring
 
   grafana:
       image: grafana/grafana
@@ -61,8 +84,15 @@ services:
         - GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH=/var/lib/grafana/dashboards/default.json
       ports:
         - 3901:3000
+      networks:
+        - monitoring
       depends_on:
         - prometheus
+
+networks:
+  teamcity-network:
+  monitoring:
+
 
 
 
