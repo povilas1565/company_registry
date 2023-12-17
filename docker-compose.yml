@@ -64,7 +64,7 @@ services:
     ports:
       - 9091:9090
     depends_on:
-      - app
+      - api
     networks:
       - monitoring
 
