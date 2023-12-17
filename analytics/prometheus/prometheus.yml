@@ -1,0 +1,8 @@
+global:
+  scrape_interval: 15s
+  external_labels:
+    monitor: "username-monitor"
+scrape_configs:
+  - job_name: "app"
+    static_configs:
+      - targets: ["app:5000"]

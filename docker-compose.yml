@@ -11,6 +11,7 @@ services:
     depends_on:
       - api
       - frontend
+
   api:
     build:
       context: ./python_registry_api
@@ -21,9 +22,47 @@ services:
       - PROD_DB=False
     ports:
       - 5000:5000
+    depends_on:
+      - api
+
   frontend:
     build: ./vue_registry_frontend
     command: "nginx -g \"daemon off;\""
     hostname: registryfrontend
     ports:
       - 80:80
+
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+      - ./analytics/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--web.external-url=http://localhost:9091/"
+    ports:
+      - 9091:9090
+    depends_on:
+      - app
+
+  grafana:
+      image: grafana/grafana
+      volumes:
+        - ./analytics/grafana/grafana.ini:/etc/grafana/grafana.ini
+        - ./analytics/grafana/datasources:/etc/grafana/provisioning/datasources
+        - ./analytics/grafana/dashboards:/var/lib/grafana/dashboards
+        - ./analytics/grafana/datasource.yaml:/etc/grafana/provisioning/datasources/datasource.yaml
+        - ./analytics/grafana/dashboard.yaml:/etc/grafana/provisioning/dashboards/dashboard.yaml
+      environment:
+        - GF_SECURITY_ADMIN_USER=admin
+        - GF_SECURITY_ADMIN_PASSWORD=admin
+        - GF_DATASOURCES_PATH=/etc/grafana/provisioning/datasources
+        - GF_DASHBOARDS_PATH=/var/lib/grafana/dashboards
+        - GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH=/var/lib/grafana/dashboards/default.json
+      ports:
+        - 3901:3000
+      depends_on:
+        - prometheus
+
+
+
