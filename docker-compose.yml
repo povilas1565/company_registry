@@ -43,8 +43,6 @@ services:
       - PROD_DB=False
     ports:
       - 5000:5000
-    depends_on:
-      - api
 
   frontend:
     build: ./vue_registry_frontend
