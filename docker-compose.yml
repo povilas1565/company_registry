@@ -61,6 +61,8 @@ services:
       - "--web.external-url=http://localhost:9091/"
     ports:
       - 9091:9090
+    depends_on:
+      - api
     networks:
       - monitoring
 
