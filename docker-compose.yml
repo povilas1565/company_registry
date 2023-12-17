@@ -49,7 +49,6 @@ services:
       image: grafana/grafana
       volumes:
         - ./analytics/grafana/grafana.ini:/etc/grafana/grafana.ini
-        - ./analytics/grafana/datasources:/etc/grafana/provisioning/datasources
         - ./analytics/grafana/dashboards:/var/lib/grafana/dashboards
         - ./analytics/grafana/datasource.yaml:/etc/grafana/provisioning/datasources/datasource.yaml
         - ./analytics/grafana/dashboard.yaml:/etc/grafana/provisioning/dashboards/dashboard.yaml
