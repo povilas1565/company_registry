@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  teamcity-server-instance:
+  teamcity-server:
     image: jetbrains/teamcity-server
     ports:
       - "8111:8111"
