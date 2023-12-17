@@ -2,3 +2,4 @@
 ./vue_registry_frontend/node-modules
 ./*.sqlite
 *cache*
+.git
