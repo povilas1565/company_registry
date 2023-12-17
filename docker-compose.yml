@@ -1,27 +1,6 @@
 version: '3.8'
 
 services:
-  teamcity-server:
-    image: jetbrains/teamcity-server
-    ports:
-      - "8111:8111"
-    restart: always
-    volumes:
-      - ~/teamcity/data:/data/teamcity_server/datadir
-      - ~/teamcity/logs:/opt/teamcity/logs
-    networks:
-      - teamcity-network
-
-  teamcity-minimal-agent:
-      image: jetbrains/teamcity-minimal-agent
-      restart: always
-      volumes:
-        - ~/teamcity/agent:/teamcity/agent-conf:/data/teamcity_agent/conf
-      environment:
-        - SERVER_URL=http//server:8111
-      networks:
-        - teamcity-network
-
   tests:
     build:
       context: ./python_registry_api
@@ -88,7 +67,6 @@ services:
         - prometheus
 
 networks:
-  teamcity-network:
   monitoring:
 
 
