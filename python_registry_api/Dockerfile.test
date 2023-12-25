@@ -18,5 +18,5 @@ RUN pipenv install --system --deploy --ignore-pipfile
 RUN playwright install --with-deps chromium
 COPY . .
 ENV PYTHONPATH "${PYTHONPATH}:./python_registry_api/"
-EXPOSE 5000
+EXPOSE 5001
 ENTRYPOINT []
