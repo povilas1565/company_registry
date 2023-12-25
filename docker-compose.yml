@@ -21,7 +21,7 @@ services:
     environment:
       - PROD_DB=False
     ports:
-      - 5000:5000
+      - 5001:5001
 
   frontend:
     build: ./vue_registry_frontend
